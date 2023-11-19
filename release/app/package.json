@@ -1,0 +1,18 @@
+{
+  "name": "quick-remind",
+  "version": "0.1.0",
+  "description": "QuickRemind is your reliable companion for prompt reminders. Set up fast, accurate local notifications to ensure nothing important slips through the cracks. Easy to use, QuickRemind helps you stay on top of important events when it matters most.",
+  "license": "MIT",
+  "author": {
+    "name": "Pavel Frolov",
+    "email": "paw.frolow@gmail.com",
+    "url": "https://pavelfrolov.com"
+  },
+  "main": "./dist/main/main.js",
+  "scripts": {
+    "rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
+    "postinstall": "npm run rebuild && npm run link-modules",
+    "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts"
+  },
+  "dependencies": {}
+}
