@@ -178,8 +178,8 @@ export const NotificationEditor = () => {
                   >
                     {repeatPeriods.map((period) => {
                       return (
-                        <MenuItem key={period.value} value={period.value}>
-                          {period.title}
+                        <MenuItem key={period} value={period}>
+                          {t(`renderer.repeatPeriods.${period}`)}
                         </MenuItem>
                       );
                     })}

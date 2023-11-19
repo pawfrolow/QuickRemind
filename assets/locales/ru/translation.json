@@ -43,5 +43,9 @@
   "renderer.pages.NotificationEditor.form.in30min": "Через 30 минут",
   "renderer.pages.NotificationEditor.form.in1hour": "Через 1 час",
   "renderer.pages.NotificationEditor.form.in2hour": "Через 2 часа",
-  "renderer.pages.NotificationEditor.form.tomorrow": "Завтра"
+  "renderer.pages.NotificationEditor.form.tomorrow": "Завтра",
+  "renderer.repeatPeriods.minute": "Минут",
+  "renderer.repeatPeriods.hour": "Час",
+  "renderer.repeatPeriods.day": "День",
+  "renderer.repeatPeriods.week": "Недель"
 }

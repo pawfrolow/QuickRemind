@@ -43,5 +43,9 @@
   "renderer.pages.NotificationEditor.form.in30min": "In 30 minutes",
   "renderer.pages.NotificationEditor.form.in1hour": "In 1 hour",
   "renderer.pages.NotificationEditor.form.in2hour": "In 2 hour",
-  "renderer.pages.NotificationEditor.form.tomorrow": "Tomorrow"
+  "renderer.pages.NotificationEditor.form.tomorrow": "Tomorrow",
+  "renderer.repeatPeriods.minute": "Minute",
+  "renderer.repeatPeriods.hour": "Hour",
+  "renderer.repeatPeriods.day": "Day",
+  "renderer.repeatPeriods.week": "Week"
 }

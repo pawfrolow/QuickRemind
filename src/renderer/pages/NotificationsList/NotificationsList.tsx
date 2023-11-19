@@ -49,7 +49,7 @@ export function NotificationsList() {
             );
           })
         ) : (
-          <s.Empty>Список пуст, добавьте уведомление</s.Empty>
+          <s.Empty>{t('renderer.pages.NotificationsList.empty')}</s.Empty>
         )}
       </Box>
       <s.Fab color="primary" aria-label="add" onClick={openCreate}>
