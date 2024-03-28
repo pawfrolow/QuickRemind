@@ -1,8 +1,8 @@
 import { ipcMain } from 'electron';
 import * as fs from 'fs';
-import { getAssetPath, sendMessageToAllWindows } from '../utils';
-import { windows } from '../windows';
-import { TNullable, TSettings } from '../types';
+import { getAssetPath, sendMessageToAllWindows } from 'main/utils';
+import { windows } from 'main/windows';
+import { TNullable, TSettings } from 'main/types';
 
 const PATH_SETTINGS = `${getAssetPath()}/settings/settings.json`;
 

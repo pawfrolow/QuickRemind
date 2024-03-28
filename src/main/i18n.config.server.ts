@@ -3,11 +3,11 @@
 import i18next from 'i18next';
 import I18NexFsBackend from 'i18next-fs-backend';
 import { ipcMain } from 'electron';
+import { config } from 'main/config';
+import { windows } from 'main/windows';
+import { getAssetPath } from 'main/utils';
+import { tray } from 'main/tray';
 import settings from '../../assets/settings/settings.json';
-import config from './config';
-import { windows } from './windows';
-import { getAssetPath } from './utils';
-import { tray } from './tray';
 
 i18next.use(I18NexFsBackend).init(
   {

@@ -1,12 +1,12 @@
 import AddIcon from '@mui/icons-material/Add';
-
 import { Box, IconButton } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
+import { TNotification } from 'renderer/types';
+import { Header, Page } from 'renderer/components';
 import * as s from './NotificationsList.styled';
-import { Header, Notification, Page } from '../../components';
-import { TNotification } from '../../types';
+import { NotificationsContent } from './components';
 
 export function NotificationsList() {
   const [notifications, setNotifications] = useState<TNotification[]>([]);
@@ -38,19 +38,7 @@ export function NotificationsList() {
         }
       />
       <Box style={{ paddingBottom: 100, overflowY: 'auto' }}>
-        {notifications.length > 0 ? (
-          notifications.map((n, i) => {
-            return (
-              <Notification
-                key={`${n.date}-${n.title}`}
-                notification={n}
-                index={i}
-              />
-            );
-          })
-        ) : (
-          <s.Empty>{t('renderer.pages.NotificationsList.empty')}</s.Empty>
-        )}
+        <NotificationsContent notifications={notifications} />
       </Box>
       <s.Fab color="primary" aria-label="add" onClick={openCreate}>
         <AddIcon />

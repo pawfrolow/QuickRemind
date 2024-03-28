@@ -13,6 +13,11 @@
     "resolveJsonModule": true,
     "allowJs": true,
     "outDir": ".erb/dll",
+    "baseUrl": "./src",
+    "paths": {
+      "@renderer/*": ["./src/renderer/*"],
+      "@main/*": ["./src/main/*"]
+    }
   },
   "exclude": ["test", "release/build", "release/app/dist", ".erb/dll"]
 }

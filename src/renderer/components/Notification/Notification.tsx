@@ -12,7 +12,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { FC } from 'react';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
-import { TNotification } from '../../types';
+import { TNotification } from 'renderer/types';
 
 type TNotificationProps = {
   notification: TNotification;
@@ -53,6 +53,9 @@ export const Notification: FC<TNotificationProps> = ({
             {dayjs(notification.date, 'DD.MM.YYYY HH:mm:ss').calendar(null, {
               sameDay: `[${t('main.calendar.today')}] HH:mm`,
               nextDay: `[${t('main.calendar.tomorrow')}] HH:mm`,
+              nextWeek: 'DD.MM.YYYY HH:mm',
+              lastDay: 'DD.MM.YYYY HH:mm',
+              lastWeek: 'DD.MM.YYYY HH:mm',
               sameElse: 'DD.MM.YYYY HH:mm',
             })}
           </Typography>

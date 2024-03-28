@@ -1,5 +1,5 @@
-import { MainWindow, SettingsWindow } from '../windows';
-import { NotificationEditorWindow } from '../windows/NotificationEditorWindow';
+import { MainWindow, SettingsWindow } from 'main/windows';
+import { NotificationEditorWindow } from 'main/windows/NotificationEditorWindow';
 
 export type TNullable<T> = T | null;
 
@@ -22,11 +22,16 @@ export type TSettings = {
   language: 'ru' | 'en';
 };
 
+export type TRepeat = {
+  number: string;
+  period: 'minute' | 'hour' | 'day' | 'week';
+  days: number[];
+  silentPeriod: [TNullable<string>, TNullable<string>];
+};
+
 export type TNotification = {
   title: string;
   description: string;
-  repeat: boolean;
-  repeatNumber: number;
-  repeatPeriod: 'minute' | 'hour' | 'day' | 'week';
   date: string;
+  repeat: TNullable<TRepeat>;
 };

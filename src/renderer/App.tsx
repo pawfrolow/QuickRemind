@@ -10,18 +10,30 @@ import '@fontsource/roboto/700.css';
 import './styles/App.css';
 import { I18nextProvider } from 'react-i18next';
 import calendar from 'dayjs/plugin/calendar';
+import weekday from 'dayjs/plugin/weekday';
 import i18next from 'i18next';
 import { observer } from 'mobx-react-lite';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useEffect } from 'react';
 import dayjs from 'dayjs';
-import { darkTheme, lightTheme } from './styles/theme';
-import { NotificationEditor, NotificationsList, Settings } from './pages';
-import { parseUrlParams } from './utils';
-import { commonStore } from './stores';
+import en from 'dayjs/locale/en';
+import { darkTheme, lightTheme } from 'renderer/styles/theme';
+import {
+  NotificationEditor,
+  NotificationsList,
+  Settings,
+} from 'renderer/pages';
+import { parseUrlParams } from 'renderer/utils';
+import { commonStore } from 'renderer/stores';
+
+dayjs.locale({
+  ...en,
+  weekStart: 1,
+});
 
 dayjs.extend(calendar);
+dayjs.extend(weekday);
 
 export const App = observer(() => {
   const getRoute = () => {

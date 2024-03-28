@@ -1,7 +1,7 @@
 import { Menu, Tray, nativeImage } from 'electron';
-import { TNullable } from '../types';
-import { getAssetPath } from '../utils';
-import config from '../config';
+import { TNullable } from 'main/types';
+import { getAssetPath } from 'main/utils';
+import { config } from 'main/config';
 import {
   getAboutSettingsMenu,
   getAddMenu,

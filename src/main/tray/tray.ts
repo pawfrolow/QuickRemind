@@ -1,4 +1,4 @@
-import { TNullable } from '../types';
+import { TNullable } from 'main/types';
 import TrayBuilder from './TrayBuilder';
 
 type TrayType = {

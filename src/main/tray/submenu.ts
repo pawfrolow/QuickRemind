@@ -1,10 +1,10 @@
 import { Menu, MenuItemConstructorOptions, app } from 'electron';
 import i18next from 'i18next';
 import dayjs from 'dayjs';
-import config from '../config';
-import { openWindow } from '../windows';
-import { notificationsController } from '../controllers';
-import { DATE_FORMAT } from '../utils';
+import { config } from 'main/config';
+import { openWindow } from 'main/windows';
+import { notificationsController } from 'main/controllers';
+import { DATE_FORMAT } from 'main/utils';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
@@ -49,6 +49,9 @@ export const getPlannedMenu = (): MenuItemConstructorOptions[] => {
         ).calendar(null, {
           sameDay: `[${i18next.t('main.calendar.today')}] HH:mm`,
           nextDay: `[${i18next.t('main.calendar.tomorrow')}] HH:mm`,
+          nextWeek: 'DD.MM.YYYY HH:mm',
+          lastDay: 'DD.MM.YYYY HH:mm',
+          lastWeek: 'DD.MM.YYYY HH:mm',
           sameElse: 'DD.MM.YYYY HH:mm',
         })})`,
         sublabel: item.description,

@@ -5,11 +5,16 @@ export type TSettings = {
 
 export type TNullable<T> = T | null;
 
+export type TRepeat = {
+  number: string;
+  period: 'minute' | 'hour' | 'day' | 'week';
+  days: number[];
+  silentPeriod: [TNullable<string>, TNullable<string>];
+};
+
 export type TNotification = {
   title: string;
   description: string;
-  repeat: boolean;
-  repeatNumber: number;
-  repeatPeriod: 'minute' | 'hour' | 'day' | 'week';
   date: string;
+  repeat: TNullable<TRepeat>;
 };

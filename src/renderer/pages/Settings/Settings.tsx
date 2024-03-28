@@ -11,9 +11,9 @@ import {
 import { observer } from 'mobx-react-lite';
 import { useRef } from 'react';
 import { toJS } from 'mobx';
-import { Page, ThemeToggle } from '../../components';
+import { commonStore } from 'renderer/stores';
+import { Page, ThemeToggle } from 'renderer/components';
 import * as s from './Settings.styled';
-import { commonStore } from '../../stores';
 
 export const Settings = observer(() => {
   const { t } = useTranslation();

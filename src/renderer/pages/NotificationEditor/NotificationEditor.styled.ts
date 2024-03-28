@@ -1,4 +1,4 @@
-import { Grid, TextField, ToggleButton } from '@mui/material';
+import { Chip, Grid, TextField, ToggleButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { StaticDatePicker } from '@mui/x-date-pickers';
 
@@ -24,4 +24,10 @@ export const ButtonsWrapper = styled(Grid)`
 export const ToggleButtonStyle = styled(ToggleButton)`
   padding: 4px 8px;
   height: 36px;
+`;
+
+export const Weekday = styled(Chip)`
+  height: 45px;
+  width: 45px;
+  border-radius: 100%;
 `;

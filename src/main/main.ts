@@ -15,9 +15,16 @@ import log from 'electron-log';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import calendar from 'dayjs/plugin/calendar';
 import dayjs from 'dayjs';
-import { MainWindow, WindowsTypes, openWindow, windows } from './windows';
-import { installExtensions } from './utils';
-import { TrayBuilder, tray } from './tray';
+import en from 'dayjs/locale/en';
+import { MainWindow, WindowsTypes, openWindow, windows } from 'main/windows';
+import { TrayBuilder, tray } from 'main/tray';
+import { installExtensions } from 'main/utils';
+import { config } from 'main/config';
+
+dayjs.locale({
+  ...en,
+  weekStart: 1,
+});
 
 dayjs.extend(customParseFormat);
 dayjs.extend(calendar);
@@ -72,6 +79,13 @@ app.on('window-all-closed', () => {
 
 app.setLoginItemSettings({
   openAtLogin: true,
+});
+
+app.setAboutPanelOptions({
+  applicationName: config.appName,
+  version: '',
+  authors: ['Pavel Frolov'],
+  website: config.website,
 });
 
 app

@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import i18next from 'i18next';
 import dayjs from 'dayjs';
-import { TNullable, TSettings } from '../types';
+import { TNullable, TSettings } from 'renderer/types';
 
 class CommonStore {
   settings: TNullable<TSettings> = null;

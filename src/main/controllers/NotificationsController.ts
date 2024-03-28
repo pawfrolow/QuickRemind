@@ -1,10 +1,15 @@
 import * as fs from 'fs';
 import { Notification, ipcMain } from 'electron';
 import dayjs from 'dayjs';
-import { TNotification, TNullable } from '../types';
-import { windows } from '../windows';
-import { DATE_FORMAT, getAssetPath, removeElem } from '../utils';
-import { tray } from '../tray';
+import { TNotification, TNullable } from 'main/types';
+import { windows } from 'main/windows';
+import {
+  DATE_FORMAT,
+  calculateNextDate,
+  getAssetPath,
+  removeElem,
+} from 'main/utils';
+import { tray } from 'main/tray';
 
 const NOTIFICATIONS_PATH = `${getAssetPath()}/data/notifications.json`;
 
@@ -20,15 +25,16 @@ class NotificationsController {
       this.notifications.push(notification);
       this.writeNotifications(this.notifications, () => {
         event.reply('notification-create');
-        this.notificationsUpdated()
+        this.notificationsUpdated();
       });
     });
 
     ipcMain.on('notification-edit', async (event, notification, index) => {
       this.notifications[index] = notification;
+      this.notifications[index].date = calculateNextDate(notification);
       this.writeNotifications(this.notifications, () => {
         event.reply('notification-edit');
-        this.notificationsUpdated()
+        this.notificationsUpdated();
       });
     });
 
@@ -38,14 +44,14 @@ class NotificationsController {
 
     ipcMain.on('notification-delete', (_, index: number) => {
       this.removeNotification(index);
-      this.notificationsUpdated()
+      this.notificationsUpdated();
     });
   }
 
   notificationsUpdated = () => {
     windows.main?.emitter?.reply('notification-get', this.notifications);
-    tray.main?.rebuildMenu()
-  }
+    tray.main?.rebuildMenu();
+  };
 
   watchNotifications = () => {
     this.watchId = setInterval(() => {
@@ -59,11 +65,7 @@ class NotificationsController {
           if (this.notifications[index].repeat) {
             const notification = { ...this.notifications[index] };
 
-            while (dayjs(notification.date, DATE_FORMAT).isBefore(dayjs())) {
-              notification.date = dayjs(notification.date, DATE_FORMAT)
-                .add(notification.repeatNumber, notification.repeatPeriod)
-                .format(DATE_FORMAT);
-            }
+            notification.date = calculateNextDate(notification);
 
             this.notifications.push(notification);
           }
@@ -97,9 +99,9 @@ class NotificationsController {
   };
 
   writeNotifications = (data: any, callback: () => void) => {
-    this.notifications = data.sort(
-      (a: TNotification, b: TNotification) => (dayjs(a.date, DATE_FORMAT).isAfter(dayjs(b.date, DATE_FORMAT)) ? 1 : -1)
-      )
+    this.notifications = data.sort((a: TNotification, b: TNotification) =>
+      dayjs(a.date, DATE_FORMAT).isAfter(dayjs(b.date, DATE_FORMAT)) ? 1 : -1,
+    );
     fs.writeFile(NOTIFICATIONS_PATH, JSON.stringify(data), (error) => {
       if (error) throw error;
 

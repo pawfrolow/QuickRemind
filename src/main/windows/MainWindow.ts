@@ -1,9 +1,9 @@
 import { ipcMain } from 'electron';
-import { resolveHtmlPath } from '../utils';
+import { config } from 'main/config';
+import { resolveHtmlPath } from 'main/utils';
+import { MenuBuilder } from 'main/menu';
 import { Window } from './Window';
-import config from '../config';
-import { windows } from '../windows';
-import { MenuBuilder } from '../menu';
+import { windows } from './windows';
 import { WindowsTypes } from '.';
 
 export class MainWindow extends Window {

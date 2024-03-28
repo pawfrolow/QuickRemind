@@ -1,8 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { toJS } from 'mobx';
+import { commonStore } from 'renderer/stores';
 import { MaterialUISwitch } from './ThemeToggle.styled';
-import { commonStore } from '../../stores';
 
 export const ThemeToggle = observer(() => {
   const changeToggle = (e: React.ChangeEvent<HTMLInputElement>) => {

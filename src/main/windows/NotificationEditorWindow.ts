@@ -1,9 +1,9 @@
 import i18next from 'i18next';
 import { ipcMain } from 'electron';
-import { resolveHtmlPath } from '../utils';
+import { resolveHtmlPath } from 'main/utils';
+import { MenuBuilder } from 'main/menu';
 import { Window } from './Window';
-import { windows } from '../windows';
-import { MenuBuilder } from '../menu';
+import { windows } from '.';
 
 export class NotificationEditorWindow extends Window {
   constructor(payload?: string) {
@@ -23,7 +23,11 @@ export class NotificationEditorWindow extends Window {
 
     this.window.on('ready-to-show', () => {
       this.window!.show();
-      this.window!.setTitle(i18next.t(`main.window.notificationEditor.title.${payload ? 'edit' : 'add'}`));
+      this.window!.setTitle(
+        i18next.t(
+          `main.window.notificationEditor.title.${payload ? 'edit' : 'add'}`,
+        ),
+      );
     });
 
     this.window.on('closed', this.clearWindow);

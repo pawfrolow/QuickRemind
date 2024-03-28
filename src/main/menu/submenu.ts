@@ -1,9 +1,8 @@
 import { Menu, MenuItemConstructorOptions, app, shell } from 'electron';
 import i18next from 'i18next';
-import config from '../config';
-import { windows } from '../windows';
-import { openWindow } from '../windows';
-import { TNullable } from '../types';
+import { config } from 'main/config';
+import { windows, openWindow } from 'main/windows';
+import { TNullable } from 'main/types';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;

@@ -1,2 +1,3 @@
-export { repeatPeriods } from './repeatPeriods';
-export { timePresets } from './timePresets';
+export * from './repeatPeriods';
+export * from './timePresets';
+export * from './weekDays';

@@ -1,8 +1,8 @@
 import i18next from 'i18next';
 import { ipcMain } from 'electron';
-import { resolveHtmlPath } from '../utils';
+import { resolveHtmlPath } from 'main/utils';
 import { Window } from './Window';
-import { windows } from '../windows';
+import { windows } from './windows';
 
 export class SettingsWindow extends Window {
   constructor() {

@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   CircularProgress,
   Grid,
@@ -11,38 +10,20 @@ import {
   Switch,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import React, { CSSProperties, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { TimePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
+import { TNotification, TNullable, TRepeat } from 'renderer/types';
+import { DATE_FORMAT, calculateNextDate, parseUrlParams } from 'renderer/utils';
+import {
+  TTimePreset,
+  repeatPeriods,
+  timePresets,
+  weekDays,
+} from 'renderer/constants';
+import { Page } from 'renderer/components';
+import { CustomTabPanel } from './components';
 import * as s from './NotificationEditor.styled';
-import { Page } from '../../components';
-import { repeatPeriods, timePresets } from '../../constants';
-import { TNotification, TNullable } from '../../types';
-import { TTimePreset } from '../../constants/timePresets';
-import { parseUrlParams } from '../../utils';
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-  style?: CSSProperties;
-}
-
-function CustomTabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <Box
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && children}
-    </Box>
-  );
-}
 
 export const NotificationEditor = () => {
   const [sending, setSending] = useState(false);
@@ -51,11 +32,36 @@ export const NotificationEditor = () => {
   const [description, setDescription] = useState('');
   const [repeat, setRepeat] = useState(false);
   const [repeatNumber, setRepeatNumber] = useState('1');
-  const [repeatPeriod, setRepeatPeriod] =
-    useState<TNotification['repeatPeriod']>('hour');
+  const [repeatPeriod, setRepeatPeriod] = useState<TRepeat['period']>('hour');
+  const [isSilentPeriod, setIsSilentPeriod] = useState(false);
+  const [silentPeriod, setSilentPeriod] = useState<
+    [TNullable<Dayjs>, TNullable<Dayjs>]
+  >([null, null]);
+  const [days, setDays] = useState([1, 2, 3, 4, 5, 6, 7]);
   const [date, setDate] = useState<Dayjs>(dayjs().add(10, 'minute'));
   const mode = useRef<'create' | 'edit'>('create');
   const index = useRef<TNullable<number>>(null);
+
+  const notification: TNotification = {
+    title,
+    description,
+    repeat: repeat
+      ? {
+          number: repeatNumber,
+          period: repeatPeriod,
+          silentPeriod: isSilentPeriod
+            ? [
+                silentPeriod[0]?.format('HH:mm') ?? null,
+                silentPeriod[1]?.format('HH:mm') ?? null,
+              ]
+            : [null, null],
+          days,
+        }
+      : null,
+    date: date.format('DD.MM.YYYY HH:mm:00'),
+  };
+
+  const isFinalStep = step === 2;
 
   const { t } = useTranslation();
 
@@ -65,10 +71,28 @@ export const NotificationEditor = () => {
       const n = JSON.parse(payload) as TNotification & { index: number };
       setTitle(n.title);
       setDescription(n.description);
-      setRepeat(n.repeat);
-      setRepeatNumber(`${n.repeatNumber}`);
-      setRepeatPeriod(n.repeatPeriod);
       setDate(dayjs(n.date, 'DD.MM.YYYY HH:mm:ss'));
+      setRepeat(!!n.repeat);
+      if (n.repeat) {
+        setRepeatNumber(n.repeat.number);
+        setRepeatPeriod(n.repeat.period);
+        setDays(n.repeat.days);
+        if (n.repeat.silentPeriod[0] && n.repeat.silentPeriod[1]) {
+          setIsSilentPeriod(true);
+          const [hoursOne, minutesOne] = n.repeat.silentPeriod[0]!.split(':');
+          const [hoursTwo, minutesTwo] = n.repeat.silentPeriod[1]!.split(':');
+          setSilentPeriod([
+            dayjs()
+              .set('hour', +hoursOne)
+              .set('minute', +minutesOne)
+              .set('second', 0),
+            dayjs()
+              .set('hour', +hoursTwo)
+              .set('minute', +minutesTwo)
+              .set('second', 0),
+          ]);
+        }
+      }
 
       mode.current = 'edit';
       index.current = n.index;
@@ -80,15 +104,6 @@ export const NotificationEditor = () => {
   };
 
   const handleConfirm = () => {
-    const notification = {
-      title,
-      description,
-      repeat,
-      repeatNumber,
-      repeatPeriod,
-      date: date.format('DD.MM.YYYY HH:mm:00'),
-    };
-
     setSending(true);
     const event:
       | 'notification-edit'
@@ -104,15 +119,16 @@ export const NotificationEditor = () => {
   const getConfirmButtonContent = () => {
     if (sending) return <CircularProgress />;
 
-    return t(`renderer.common.${step === 1 ? 'confirm' : 'next'}`);
+    return t(`renderer.common.${isFinalStep ? 'confirm' : 'next'}`);
   };
 
   const getConfirmDisabled = () => {
-    if (step === 1) {
+    if (isFinalStep) {
       if (!title || !description) return true;
 
-      if (repeat && (!repeatNumber || repeatNumber === '0')) {
-        return true;
+      if (repeat) {
+        if (!repeatNumber || repeatNumber === '0') return true;
+        if (days.length === 0) return true;
       }
     }
 
@@ -136,6 +152,8 @@ export const NotificationEditor = () => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
+      </CustomTabPanel>
+      <CustomTabPanel value={step} index={1}>
         <List disablePadding>
           <ListItem style={{ paddingLeft: 0, paddingRight: 0 }}>
             <ListItemText
@@ -157,9 +175,9 @@ export const NotificationEditor = () => {
                     label={t('renderer.pages.NotificationEditor.form.number')}
                     variant="standard"
                     value={repeatNumber}
-                    onChange={(e) =>
-                      setRepeatNumber(e.target.value.replace(/\D/g, ''))
-                    }
+                    onChange={(e) => {
+                      setRepeatNumber(e.target.value.replace(/\D/g, '') || '0');
+                    }}
                     style={{ width: '100%' }}
                   />
                 </Grid>
@@ -170,11 +188,9 @@ export const NotificationEditor = () => {
                     select
                     style={{ width: '100%' }}
                     value={repeatPeriod}
-                    onChange={(e) =>
-                      setRepeatPeriod(
-                        e.target.value as TNotification['repeatPeriod'],
-                      )
-                    }
+                    onChange={(e) => {
+                      setRepeatPeriod(e.target.value as TRepeat['period']);
+                    }}
                   >
                     {repeatPeriods.map((period) => {
                       return (
@@ -188,15 +204,90 @@ export const NotificationEditor = () => {
               </Grid>
             </ListItem>
           )}
+          {repeat && (
+            <ListItem style={{ paddingLeft: 0, paddingRight: 0 }}>
+              <ListItemText
+                primary={t(
+                  'renderer.pages.NotificationEditor.form.silencePeriod',
+                )}
+              />
+              <Switch
+                checked={isSilentPeriod}
+                onChange={(e) => setIsSilentPeriod(e.target.checked)}
+              />
+            </ListItem>
+          )}
+          {repeat && isSilentPeriod && (
+            <ListItem style={{ paddingLeft: 0, paddingRight: 0 }}>
+              <ListItemText
+                primary={t(
+                  'renderer.pages.NotificationEditor.form.silencePeriod',
+                )}
+              />
+              <Grid container style={{ width: '50%' }}>
+                <Grid item xs={6} style={{ paddingRight: 8 }}>
+                  <TimePicker
+                    label={t('renderer.pages.NotificationEditor.form.from')}
+                    value={silentPeriod[0]}
+                    onChange={(value) =>
+                      setSilentPeriod([value ?? dayjs(), silentPeriod[1]])
+                    }
+                    ampm={false}
+                  />
+                </Grid>
+                <Grid item xs={6} style={{ paddingLeft: 8 }}>
+                  <TimePicker
+                    label={t('renderer.pages.NotificationEditor.form.to')}
+                    value={silentPeriod[1]}
+                    onChange={(value) =>
+                      setSilentPeriod([silentPeriod[0], value ?? dayjs()])
+                    }
+                    ampm={false}
+                  />
+                </Grid>
+              </Grid>
+            </ListItem>
+          )}
+          {repeat && (
+            <Grid
+              container
+              justifyContent="center"
+              style={{ marginBottom: 16, marginTop: 16 }}
+            >
+              {Object.entries(weekDays).map(([key, value]) => (
+                <Grid key={`week-day-${key}`} item style={{ marginRight: 16 }}>
+                  <s.Weekday
+                    variant={days.includes(+key) ? 'filled' : 'outlined'}
+                    color="primary"
+                    label={t(`common.week.short.${value}`)}
+                    onClick={() =>
+                      setDays(
+                        days.includes(+key)
+                          ? days.filter((day) => day !== +key)
+                          : [...new Set([...days, +key].sort((a, b) => a - b))],
+                      )
+                    }
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          )}
         </List>
       </CustomTabPanel>
-      <CustomTabPanel value={step} index={1}>
+      <CustomTabPanel value={step} index={2}>
         <Grid container style={{ width: '100%' }}>
           <Grid item xs={8}>
             <s.DatePicker
               disablePast
               value={date}
               onChange={(value) => value && setDate(value as Dayjs)}
+              minDate={dayjs(
+                calculateNextDate({
+                  ...notification,
+                  date: dayjs().format('DD.MM.YYYY HH:mm:00'),
+                }),
+                DATE_FORMAT,
+              )}
             />
           </Grid>
           <Grid item xs={4} style={{ paddingLeft: 16 }}>
@@ -244,7 +335,7 @@ export const NotificationEditor = () => {
         )}
         <Grid item>
           <Button
-            onClick={() => (step === 1 ? handleConfirm() : setStep(step + 1))}
+            onClick={() => (isFinalStep ? handleConfirm() : setStep(step + 1))}
             variant="contained"
             disabled={getConfirmDisabled()}
           >

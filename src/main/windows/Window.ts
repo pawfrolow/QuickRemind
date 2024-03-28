@@ -4,11 +4,11 @@ import {
   IpcMainEvent,
   app,
 } from 'electron';
+import { settingsController } from 'main/controllers';
+import { MenuBuilder } from 'main/menu';
+import { TNullable } from 'main/types';
+import { onOpenUrl, selectAppIcon } from 'main/utils';
 import path from 'path';
-import { onOpenUrl, selectAppIcon } from '../utils';
-import { settingsController } from '../controllers';
-import { TNullable } from '../types';
-import { MenuBuilder } from '../menu';
 
 export abstract class Window {
   window: TNullable<BrowserWindow> = null;
