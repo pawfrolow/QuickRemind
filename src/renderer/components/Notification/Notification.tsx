@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardActions,
-  CardContent,
-  IconButton,
-  Typography,
-} from '@mui/material';
+import { Card, CardActions, CardContent, IconButton, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RepeatIcon from '@mui/icons-material/Repeat';
@@ -19,37 +13,19 @@ type TNotificationProps = {
   index: number;
 };
 
-export const Notification: FC<TNotificationProps> = ({
-  notification,
-  index,
-}) => {
+export const Notification: FC<TNotificationProps> = ({ notification, index }) => {
   const { t } = useTranslation();
   return (
-    <Card
-      sx={{ width: '100%', display: 'flex' }}
-      style={{ marginBottom: 8, position: 'relative' }}
-    >
+    <Card sx={{ width: '100%', display: 'flex' }} style={{ marginBottom: 8, position: 'relative' }}>
       <CardContent style={{ flex: 1 }}>
-        <Typography
-          gutterBottom
-          variant="h6"
-          component="div"
-          style={{ display: 'flex', alignItems: 'center' }}
-        >
+        <Typography gutterBottom variant="h6" component="div" style={{ display: 'flex', alignItems: 'center' }}>
           {notification.repeat ? (
             <RepeatIcon color="primary" style={{ marginRight: 16 }} />
           ) : (
-            <NotificationsIcon
-              style={{ marginRight: 16, marginBottom: 4 }}
-              fontSize="small"
-            />
+            <NotificationsIcon style={{ marginRight: 16, marginBottom: 4 }} fontSize="small" />
           )}
           {notification.title}
-          <Typography
-            variant="body2"
-            component="span"
-            style={{ marginLeft: 'auto' }}
-          >
+          <Typography variant="body2" component="span" style={{ marginLeft: 'auto' }}>
             {dayjs(notification.date, 'DD.MM.YYYY HH:mm:ss').calendar(null, {
               sameDay: `[${t('main.calendar.today')}] HH:mm`,
               nextDay: `[${t('main.calendar.tomorrow')}] HH:mm`,
@@ -82,12 +58,7 @@ export const Notification: FC<TNotificationProps> = ({
         </IconButton>
         <IconButton
           aria-label="edit"
-          onClick={() =>
-            window.electron.ipcRenderer.sendMessage(
-              'notification-delete',
-              index,
-            )
-          }
+          onClick={() => window.electron.ipcRenderer.sendMessage('notification-delete', index)}
         >
           <DeleteIcon />
         </IconButton>

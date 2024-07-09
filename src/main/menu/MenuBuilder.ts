@@ -1,10 +1,5 @@
 import { BrowserWindow, Menu, MenuItemConstructorOptions } from 'electron';
-import {
-  getSubmenuAbout,
-  getSubmenuHelp,
-  getSubmenuView,
-  getSubmenuWindow,
-} from './submenu';
+import { getSubmenuAbout, getSubmenuHelp, getSubmenuView, getSubmenuWindow } from './submenu';
 
 export default class MenuBuilder {
   mainWindow: BrowserWindow;
@@ -14,19 +9,13 @@ export default class MenuBuilder {
   }
 
   buildMenu(): Menu {
-    if (
-      process.env.NODE_ENV === 'development' ||
-      process.env.DEBUG_PROD === 'true'
-    ) {
+    if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
       this.setupDevelopmentEnvironment();
     }
 
-    const template = [
-      getSubmenuAbout(),
-      getSubmenuView(),
-      getSubmenuWindow(),
-      getSubmenuHelp(),
-    ].filter((elem) => !!elem) as MenuItemConstructorOptions[];
+    const template = [getSubmenuAbout(), getSubmenuView(), getSubmenuWindow(), getSubmenuHelp()].filter(
+      (elem) => !!elem,
+    ) as MenuItemConstructorOptions[];
 
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);

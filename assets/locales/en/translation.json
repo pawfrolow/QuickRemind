@@ -58,5 +58,6 @@
   "renderer.repeatPeriods.minute": "Minute",
   "renderer.repeatPeriods.hour": "Hour",
   "renderer.repeatPeriods.day": "Day",
-  "renderer.repeatPeriods.week": "Week"
+  "renderer.repeatPeriods.week": "Week",
+  "validation.required": "Field is required"
 }

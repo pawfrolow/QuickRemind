@@ -58,5 +58,6 @@
   "renderer.repeatPeriods.minute": "Минут",
   "renderer.repeatPeriods.hour": "Час",
   "renderer.repeatPeriods.day": "День",
-  "renderer.repeatPeriods.week": "Недель"
+  "renderer.repeatPeriods.week": "Недель",
+  "validation.required": "Поле обязательно для заполнения"
 }

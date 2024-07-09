@@ -1,8 +1,10 @@
 body {
-  font-family: "Roboto";
+  font-family: 'Roboto';
 }
 
-html, body, #root {
+html,
+body,
+#root {
   background: transparent;
 }
 

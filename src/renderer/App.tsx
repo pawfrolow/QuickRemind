@@ -19,11 +19,7 @@ import { useEffect } from 'react';
 import dayjs from 'dayjs';
 import en from 'dayjs/locale/en';
 import { darkTheme, lightTheme } from 'renderer/styles/theme';
-import {
-  NotificationEditor,
-  NotificationsList,
-  Settings,
-} from 'renderer/pages';
+import { NotificationEditor, NotificationsList, Settings } from 'renderer/pages';
 import { parseUrlParams } from 'renderer/utils';
 import { commonStore } from 'renderer/stores';
 
@@ -60,11 +56,7 @@ export const App = observer(() => {
   return (
     <I18nextProvider i18n={i18next}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <ThemeProvider
-          theme={
-            commonStore.settings.theme === 'light' ? lightTheme : darkTheme
-          }
-        >
+        <ThemeProvider theme={commonStore.settings.theme === 'light' ? lightTheme : darkTheme}>
           <Router>
             <Routes>
               <Route path="/" element={getRoute()} />

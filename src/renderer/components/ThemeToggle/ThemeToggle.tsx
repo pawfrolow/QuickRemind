@@ -12,11 +12,5 @@ export const ThemeToggle = observer(() => {
     });
   };
 
-  return (
-    <MaterialUISwitch
-      sx={{ m: 1 }}
-      checked={commonStore.settings?.theme === 'dark'}
-      onChange={changeToggle}
-    />
-  );
+  return <MaterialUISwitch sx={{ m: 1 }} checked={commonStore.settings?.theme === 'dark'} onChange={changeToggle} />;
 });

@@ -3,12 +3,7 @@ import { Notification, ipcMain } from 'electron';
 import dayjs from 'dayjs';
 import { TNotification, TNullable } from 'main/types';
 import { windows } from 'main/windows';
-import {
-  DATE_FORMAT,
-  calculateNextDate,
-  getAssetPath,
-  removeElem,
-} from 'main/utils';
+import { DATE_FORMAT, calculateNextDate, getAssetPath, removeElem } from 'main/utils';
 import { tray } from 'main/tray';
 
 const NOTIFICATIONS_PATH = `${getAssetPath()}/data/notifications.json`;
@@ -56,9 +51,7 @@ class NotificationsController {
   watchNotifications = () => {
     this.watchId = setInterval(() => {
       if (this.notifications.length > 0) {
-        const index = this.notifications.findIndex((elem) =>
-          dayjs(elem.date, DATE_FORMAT).isBefore(dayjs()),
-        );
+        const index = this.notifications.findIndex((elem) => dayjs(elem.date, DATE_FORMAT).isBefore(dayjs()));
         if (index > -1) {
           this.sendNotification(index);
 

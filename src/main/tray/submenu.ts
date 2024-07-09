@@ -39,37 +39,29 @@ export const getQuitMenu = (): DarwinMenuItemConstructorOptions[] =>
     : [];
 
 export const getPlannedMenu = (): MenuItemConstructorOptions[] => {
-  const items: MenuItemConstructorOptions[] =
-    notificationsController.notifications
-      .filter((_, index) => index < MAX_NOTIFICATIONS)
-      .map((item, index) => ({
-        label: `${item.repeat ? '🔁' : ''} ${item.title} (${dayjs(
-          item.date,
-          DATE_FORMAT,
-        ).calendar(null, {
-          sameDay: `[${i18next.t('main.calendar.today')}] HH:mm`,
-          nextDay: `[${i18next.t('main.calendar.tomorrow')}] HH:mm`,
-          nextWeek: 'DD.MM.YYYY HH:mm',
-          lastDay: 'DD.MM.YYYY HH:mm',
-          lastWeek: 'DD.MM.YYYY HH:mm',
-          sameElse: 'DD.MM.YYYY HH:mm',
-        })})`,
-        sublabel: item.description,
-        submenu: [
-          {
-            label: `✎ ${i18next.t('main.menu.edit.edit')}`,
-            click: () =>
-              openWindow(
-                'notificationEditor',
-                JSON.stringify({ ...item, index }),
-              ),
-          },
-          {
-            label: `✗ ${i18next.t('main.menu.edit.delete')}`,
-            click: () => notificationsController.removeNotification(index),
-          },
-        ],
-      }));
+  const items: MenuItemConstructorOptions[] = notificationsController.notifications
+    .filter((_, index) => index < MAX_NOTIFICATIONS)
+    .map((item, index) => ({
+      label: `${item.repeat ? '🔁' : ''} ${item.title} (${dayjs(item.date, DATE_FORMAT).calendar(null, {
+        sameDay: `[${i18next.t('main.calendar.today')}] HH:mm`,
+        nextDay: `[${i18next.t('main.calendar.tomorrow')}] HH:mm`,
+        nextWeek: 'DD.MM.YYYY HH:mm',
+        lastDay: 'DD.MM.YYYY HH:mm',
+        lastWeek: 'DD.MM.YYYY HH:mm',
+        sameElse: 'DD.MM.YYYY HH:mm',
+      })})`,
+      sublabel: item.description,
+      submenu: [
+        {
+          label: `✎ ${i18next.t('main.menu.edit.edit')}`,
+          click: () => openWindow('notificationEditor', JSON.stringify({ ...item, index })),
+        },
+        {
+          label: `✗ ${i18next.t('main.menu.edit.delete')}`,
+          click: () => notificationsController.removeNotification(index),
+        },
+      ],
+    }));
 
   if (items.length === 0) {
     items.push({
@@ -79,8 +71,7 @@ export const getPlannedMenu = (): MenuItemConstructorOptions[] => {
   }
 
   if (notificationsController.notifications.length > MAX_NOTIFICATIONS) {
-    const rest =
-      notificationsController.notifications.length - MAX_NOTIFICATIONS;
+    const rest = notificationsController.notifications.length - MAX_NOTIFICATIONS;
     items.push({
       label: `${i18next.t('main.tray.more')} ${rest}...`,
       enabled: false,

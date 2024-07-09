@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "title": "123",
+    "description": "123",
+    "repeat": { "number": "1", "period": "minute" },
+    "date": "09.07.2024 14:12:00"
+  }
+]

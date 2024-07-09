@@ -23,19 +23,13 @@ export class NotificationEditorWindow extends Window {
 
     this.window.on('ready-to-show', () => {
       this.window!.show();
-      this.window!.setTitle(
-        i18next.t(
-          `main.window.notificationEditor.title.${payload ? 'edit' : 'add'}`,
-        ),
-      );
+      this.window!.setTitle(i18next.t(`main.window.notificationEditor.title.${payload ? 'edit' : 'add'}`));
     });
 
     this.window.on('closed', this.clearWindow);
 
     this.window.loadURL(
-      `${resolveHtmlPath('index.html')}?route=notificationEditor${
-        payload ? `&payload=${payload}` : ''
-      }`,
+      `${resolveHtmlPath('index.html')}?route=notificationEditor${payload ? `&payload=${payload}` : ''}`,
     );
 
     if (this.window) {

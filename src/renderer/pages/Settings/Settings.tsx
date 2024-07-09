@@ -1,13 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import TranslateIcon from '@mui/icons-material/Translate';
-import {
-  Button,
-  Grid,
-  List,
-  ListItemIcon,
-  ListItemText,
-  ToggleButtonGroup,
-} from '@mui/material';
+import { Button, Grid, List, ListItemIcon, ListItemText, ToggleButtonGroup } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useRef } from 'react';
 import { toJS } from 'mobx';
@@ -29,10 +22,7 @@ export const Settings = observer(() => {
     }
   };
   const cancel = () => {
-    window.electron.ipcRenderer.sendMessage(
-      'settings-save',
-      prevSettings.current,
-    );
+    window.electron.ipcRenderer.sendMessage('settings-save', prevSettings.current);
     window.close();
   };
 

@@ -21,9 +21,7 @@ class SettingsController {
         Object.values(windows).forEach((window) => {
           if (window && window.window) {
             window.window.webContents.send('settings-get', settings);
-            window.window.setBackgroundColor(
-              settings.theme === 'light' ? '#fff' : '#333',
-            );
+            window.window.setBackgroundColor(settings.theme === 'light' ? '#fff' : '#333');
           }
         });
       });

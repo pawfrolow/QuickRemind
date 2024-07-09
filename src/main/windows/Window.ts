@@ -1,9 +1,4 @@
-import {
-  BrowserWindow,
-  BrowserWindowConstructorOptions,
-  IpcMainEvent,
-  app,
-} from 'electron';
+import { BrowserWindow, BrowserWindowConstructorOptions, IpcMainEvent, app } from 'electron';
 import { settingsController } from 'main/controllers';
 import { MenuBuilder } from 'main/menu';
 import { TNullable } from 'main/types';
@@ -25,8 +20,7 @@ export abstract class Window {
           ? path.join(__dirname, 'preload.js')
           : path.join(__dirname, '../../../.erb/dll/preload.js'),
       },
-      backgroundColor:
-        settingsController.settings?.theme === 'light' ? '#fff' : '#333',
+      backgroundColor: settingsController.settings?.theme === 'light' ? '#fff' : '#333',
       ...options,
     });
 

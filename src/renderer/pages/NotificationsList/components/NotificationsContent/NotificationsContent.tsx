@@ -8,16 +8,12 @@ interface INotificationsContentProps {
   notifications: TNotification[];
 }
 
-export const NotificationsContent: FC<INotificationsContentProps> = ({
-  notifications,
-}) => {
+export const NotificationsContent: FC<INotificationsContentProps> = ({ notifications }) => {
   const { t } = useTranslation();
 
   return notifications.length > 0 ? (
     notifications.map((n, i) => {
-      return (
-        <Notification key={`${n.date}-${n.title}`} notification={n} index={i} />
-      );
+      return <Notification key={`${n.date}-${n.title}`} notification={n} index={i} />;
     })
   ) : (
     <s.Empty>{t('renderer.pages.NotificationsList.empty')}</s.Empty>

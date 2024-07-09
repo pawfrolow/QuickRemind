@@ -11,48 +11,47 @@ interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
 
 const isMacOs = process.platform === 'darwin';
 
-export const getSubmenuAbout =
-  (): TNullable<DarwinMenuItemConstructorOptions> => {
-    if (isMacOs) {
-      return {
-        label: config.appName,
-        submenu: [
-          {
-            label: i18next.t('main.menu.main.about'),
-            selector: 'orderFrontStandardAboutPanel:',
+export const getSubmenuAbout = (): TNullable<DarwinMenuItemConstructorOptions> => {
+  if (isMacOs) {
+    return {
+      label: config.appName,
+      submenu: [
+        {
+          label: i18next.t('main.menu.main.about'),
+          selector: 'orderFrontStandardAboutPanel:',
+        },
+        { type: 'separator' },
+        { label: i18next.t('main.menu.main.updates') },
+        { type: 'separator' },
+        {
+          label: i18next.t('main.menu.main.settings'),
+          click: () => openWindow('settings'),
+        },
+        { type: 'separator' },
+        {
+          label: i18next.t('main.menu.main.hide'),
+          accelerator: 'Command+H',
+          selector: 'hide:',
+        },
+        {
+          label: i18next.t('main.menu.main.hideOthers'),
+          accelerator: 'Command+Shift+H',
+          selector: 'hideOtherApplications:',
+        },
+        { type: 'separator' },
+        {
+          label: i18next.t('main.menu.main.quit'),
+          accelerator: 'Command+Q',
+          click: () => {
+            app.quit();
           },
-          { type: 'separator' },
-          { label: i18next.t('main.menu.main.updates') },
-          { type: 'separator' },
-          {
-            label: i18next.t('main.menu.main.settings'),
-            click: () => openWindow('settings'),
-          },
-          { type: 'separator' },
-          {
-            label: i18next.t('main.menu.main.hide'),
-            accelerator: 'Command+H',
-            selector: 'hide:',
-          },
-          {
-            label: i18next.t('main.menu.main.hideOthers'),
-            accelerator: 'Command+Shift+H',
-            selector: 'hideOtherApplications:',
-          },
-          { type: 'separator' },
-          {
-            label: i18next.t('main.menu.main.quit'),
-            accelerator: 'Command+Q',
-            click: () => {
-              app.quit();
-            },
-          },
-        ],
-      };
-    }
+        },
+      ],
+    };
+  }
 
-    return null;
-  };
+  return null;
+};
 
 export const getSubmenuHelp = (): MenuItemConstructorOptions => ({
   label: i18next.t('main.menu.help.label'),
@@ -87,9 +86,7 @@ export const getSubmenuView = (): MenuItemConstructorOptions => ({
       label: i18next.t('main.menu.view.fullScreen'),
       accelerator: isMacOs ? 'Ctrl+Command+F' : 'F11',
       click: () => {
-        windows.main!.window!.setFullScreen(
-          !windows.main!.window!.isFullScreen(),
-        );
+        windows.main!.window!.setFullScreen(!windows.main!.window!.isFullScreen());
       },
     },
     {
@@ -102,24 +99,23 @@ export const getSubmenuView = (): MenuItemConstructorOptions => ({
   ],
 });
 
-export const getSubmenuWindow =
-  (): TNullable<DarwinMenuItemConstructorOptions> => {
-    if (isMacOs) {
-      return {
-        label: i18next.t('main.menu.window.label'),
-        submenu: [
-          {
-            label: i18next.t('main.menu.window.minimize'),
-            accelerator: 'Command+M',
-            selector: 'performMiniaturize:',
-          },
-          {
-            label: i18next.t('main.menu.window.close'),
-            accelerator: 'Command+W',
-            selector: 'performClose:',
-          },
-        ],
-      };
-    }
-    return null;
-  };
+export const getSubmenuWindow = (): TNullable<DarwinMenuItemConstructorOptions> => {
+  if (isMacOs) {
+    return {
+      label: i18next.t('main.menu.window.label'),
+      submenu: [
+        {
+          label: i18next.t('main.menu.window.minimize'),
+          accelerator: 'Command+M',
+          selector: 'performMiniaturize:',
+        },
+        {
+          label: i18next.t('main.menu.window.close'),
+          accelerator: 'Command+W',
+          selector: 'performClose:',
+        },
+      ],
+    };
+  }
+  return null;
+};

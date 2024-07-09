@@ -25,8 +25,6 @@ export type TSettings = {
 export type TRepeat = {
   number: string;
   period: 'minute' | 'hour' | 'day' | 'week';
-  days: number[];
-  silentPeriod: [TNullable<string>, TNullable<string>];
 };
 
 export type TNotification = {
